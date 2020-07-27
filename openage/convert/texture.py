@@ -28,7 +28,7 @@ def subtexture_meta(tx, ty, hx, hy, cx, cy):
         height, width
         center/hotspot x, y
     """
-    ret = {
+    return {
         "x":  tx,
         "y":  ty,
         "w":  hx,
@@ -36,8 +36,6 @@ def subtexture_meta(tx, ty, hx, hy, cx, cy):
         "cx": cx,
         "cy": cy,
     }
-
-    return ret
 
 
 class TextureImage:
@@ -62,11 +60,7 @@ class TextureImage:
 
         spam("creating TextureImage with size %d x %d", self.width, self.height)
 
-        if hotspot is None:
-            self.hotspot = (0, 0)
-        else:
-            self.hotspot = hotspot
-
+        self.hotspot = (0, 0) if hotspot is None else hotspot
         self.data = picture_data
 
     def get_pil_image(self):

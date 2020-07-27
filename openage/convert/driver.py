@@ -204,7 +204,7 @@ def extract_mediafiles_names_map(srcdir):
 
     matcher = re.compile(r"\w+_files\s+(\w+)\s+\w+\s+(\w+)")
 
-    names_map = dict()
+    names_map = {}
 
     for filepath in srcdir["interface"].iterdir():
         if filepath.suffix == '.bina':

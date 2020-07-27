@@ -32,7 +32,7 @@ $members
         self.data_ready = False
 
         self.struct_name = struct_name
-        self.member_list = list()
+        self.member_list = []
 
         self.set_comment(comment)
         self.set_parents(parents)

@@ -55,7 +55,7 @@ def gather_data(obj, members):
     key: member name
     value: obj's member value
     """
-    ret = dict()
+    ret = {}
 
     for attr, _ in members:
         ret[attr] = getattr(obj, attr)

@@ -507,10 +507,12 @@ class Exportable:
             elif isinstance(member_type, ContinueReadMember):
                 definitively_return_member = True
 
-            if allowed_modes:
-                if export not in allowed_modes:
-                    if not definitively_return_member:
-                        continue
+            if (
+                allowed_modes
+                and export not in allowed_modes
+                and not definitively_return_member
+            ):
+                continue
 
             member_entry = (is_parent,) + member
             yield member_entry

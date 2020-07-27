@@ -52,9 +52,14 @@ def getenv_bool(varname):
     fetches a "boolean" environment variable.
     """
     value = os.environ.get(varname)
-    if isinstance(value, str):
-        if value.lower() in {"0", "false", "no", "off", "n"}:
-            value = False
+    if isinstance(value, str) and value.lower() in {
+        "0",
+        "false",
+        "no",
+        "off",
+        "n",
+    }:
+        value = False
 
     return bool(value)
 

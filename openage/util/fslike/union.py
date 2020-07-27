@@ -80,9 +80,10 @@ class Union(FSLikeObject):
 
         for idx, (mountpoint, pathobj, _) in enumerate(self.mounts):
             # cut the search so prefixes can be matched.
-            if mountpoint == tuple(search_mountpoint[:len(mountpoint)]):
-                if not source_pathobj or source_pathobj == pathobj:
-                    unmount.append(idx)
+            if mountpoint == tuple(search_mountpoint[: len(mountpoint)]) and (
+                not source_pathobj or source_pathobj == pathobj
+            ):
+                unmount.append(idx)
 
         if unmount:
             # reverse the order so that the indices never shift.
@@ -239,11 +240,7 @@ class Union(FSLikeObject):
         raise FileNotFoundError(b'/'.join(srcparts))
 
     def is_file(self, parts):
-        for path in self.candidate_paths(parts):
-            if path.is_file():
-                return True
-
-        return False
+        return any(path.is_file() for path in self.candidate_paths(parts))
 
     def is_dir(self, parts):
         try:
@@ -254,18 +251,10 @@ class Union(FSLikeObject):
         except KeyError:
             pass
 
-        for path in self.candidate_paths(parts):
-            if path.is_dir():
-                return True
-
-        return False
+        return any(path.is_dir() for path in self.candidate_paths(parts))
 
     def writable(self, parts):
-        for path in self.candidate_paths(parts):
-            if path.writable():
-                return True
-
-        return False
+        return any(path.writable() for path in self.candidate_paths(parts))
 
     def watch(self, parts, callback):
         watching = False

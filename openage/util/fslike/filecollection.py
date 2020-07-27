@@ -233,9 +233,5 @@ class FileCollectionPath(Path):
         """
         Like add_file, but uses a Path object instead of callables.
         """
-        if path.writable():
-            open_w = path.open_w
-        else:
-            open_w = None
-
+        open_w = path.open_w if path.writable() else None
         self.add_file(path.open_r, open_w, path.filesize, path.mtime)

@@ -63,10 +63,12 @@ def changes(asset_version, spec_version):
     for version_changes in CHANGES[first_new_version:]:
         changed_components |= version_changes
 
-    if "metadata" not in changed_components:
-        if EmpiresDat.get_hash() != spec_version:
-            info("game metadata hash changed, need to reconvert it")
-            changed_components.add("metadata")
+    if (
+        "metadata" not in changed_components
+        and EmpiresDat.get_hash() != spec_version
+    ):
+        info("game metadata hash changed, need to reconvert it")
+        changed_components.add("metadata")
 
     return changed_components
 

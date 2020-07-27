@@ -44,9 +44,8 @@ def find_issues(dirnames, exts):
         if data and not data.endswith('\n'):
             yield "File does not end in '\\n'", filename, None
 
-        if has_ext(filename, ('.py', '.pyx', '.pxd')):
-            if '\t' in data:
-                yield "File contains tabs", filename, None
+        if has_ext(filename, ('.py', '.pyx', '.pxd')) and '\t' in data:
+            yield "File contains tabs", filename, None
 
         if TRAIL_WHITESPACE_RE.search(data) or IMMEDIATE_TODO_RE.search(data):
             analyse_each_line = True

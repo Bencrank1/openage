@@ -119,7 +119,7 @@ def mount_input(srcdir=None, prev_source_dir_path=None):
         no_support = True
 
     # no supported version was found
-    if not any(version.support == Support.yes for version in game_versions):
+    if all(version.support != Support.yes for version in game_versions):
         warn("No supported game version found:")
         for version in GameVersion:
             warn(" * %s", version)

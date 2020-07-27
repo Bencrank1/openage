@@ -54,15 +54,13 @@ def list_targets(test_lister, demo_lister, benchmark_lister):
 def list_targets_py():
     """ Invokes list_targets() with the py-specific listers. """
     from .testlist import tests_py, demos_py, benchmark_py
-    for val in list_targets(tests_py, demos_py, benchmark_py):
-        yield val
+    yield from list_targets(tests_py, demos_py, benchmark_py)
 
 
 def list_targets_cpp():
     """ Invokes list_targets() with the C++-specific listers. """
     from .testlist import tests_cpp, demos_cpp, benchmark_cpp
-    for val in list_targets(tests_cpp, demos_cpp, benchmark_cpp):
-        yield val
+    yield from list_targets(tests_cpp, demos_cpp, benchmark_cpp)
 
 
 def get_all_targets():

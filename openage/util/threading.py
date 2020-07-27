@@ -31,9 +31,9 @@ def concurrent_chain(generators, jobs=None):
         return
 
     queue = ClosableQueue()
-    running_generator_count = 0
-
     with ThreadPoolExecutor(jobs) as pool:
+        running_generator_count = 0
+
         for generator in generators:
             pool.submit(generator_to_queue, generator, queue)
             running_generator_count += 1

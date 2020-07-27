@@ -112,10 +112,10 @@ class DataFormatter:
 
     def __init__(self):
         # list of all dumpable data sets
-        self.data = list()
+        self.data = []
 
         # collection of all type definitions
-        self.typedefs = dict()
+        self.typedefs = {}
 
     def add_data(self, data_set_pile, prefix=None, single_output=None):
         """
@@ -143,20 +143,19 @@ class DataFormatter:
 
                 # store resolved (first-time definitions) members in a
                 # symbol list
-                if isinstance(member_type, RefMember):
-                    if member_type.resolved:
-                        if member_type.get_effective_type() in self.typedefs:
-                            if data_set.members[member_name] is not self.typedefs[member_type.get_effective_type()]:
-                                raise Exception("different redefinition of type %s" % member_type.get_effective_type())
-                        else:
-                            ref_member = data_set.members[member_name]
+                if isinstance(member_type, RefMember) and member_type.resolved:
+                    if member_type.get_effective_type() in self.typedefs:
+                        if data_set.members[member_name] is not self.typedefs[member_type.get_effective_type()]:
+                            raise Exception("different redefinition of type %s" % member_type.get_effective_type())
+                    else:
+                        ref_member = data_set.members[member_name]
 
-                            # if not overridden,
-                            # use name of struct file to store
-                            if ref_member.file_name is None:
-                                ref_member.file_name = data_set.name_struct_file
+                        # if not overridden,
+                        # use name of struct file to store
+                        if ref_member.file_name is None:
+                            ref_member.file_name = data_set.name_struct_file
 
-                            self.typedefs[member_type.get_effective_type()] = ref_member
+                        self.typedefs[member_type.get_effective_type()] = ref_member
 
             self.data.append(data_set)
 

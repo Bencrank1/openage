@@ -467,7 +467,7 @@ class CABFolderStream(PosSavingReadOnlyFileLikeObject):
 
             # read info for the rightmost known block to get its size.
             offset = self.blockoffsets[-1]
-            self.fileobj.seek(self.blockoffsets[-1])
+            self.fileobj.seek(offset)
             datablock = CFData.read(self.fileobj)
 
             # add starting position of next block to metadata.

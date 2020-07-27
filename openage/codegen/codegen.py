@@ -84,9 +84,7 @@ class CodegenDirWrapper(Wrapper):
         Returns an iterable of all path component tuples for files that have
         been read.
         """
-        for parts in self.reads:
-            yield parts
-
+        yield from self.reads
         self.reads.clear()
 
     def get_writes(self):
