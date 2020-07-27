@@ -145,7 +145,7 @@ class ColorTable(Exportable):
         self.gen_image().save(fileobj, 'png')
 
     def dump(self, filename):
-        data = list()
+        data = []
 
         # dump all color entries
         for idx, entry in enumerate(self.palette):

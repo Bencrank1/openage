@@ -90,16 +90,11 @@ def print_tree(obj, path="", prefix="", max_entries=INF):
 
     from .iterators import denote_last
     for (name, isdir, is_meta), is_last in denote_last(entries):
-        if is_last:
-            treesymbol, nextindent = '\u2514', '   '
-        else:
-            treesymbol, nextindent = '\u251c', '\u2502  '
+        treesymbol, nextindent = (
+            ('\u2514', '   ') if is_last else ('\u251c', '\u2502  ')
+        )
 
-        if is_meta:
-            entryindent = '\u257c '
-        else:
-            entryindent = '\u2500 '
-
+        entryindent = '\u257c ' if is_meta else '\u2500 '
         if isdir:
             print(prefix + treesymbol + entryindent + colorize_dirname(name))
             obj.print_tree(path + '/' + name, prefix + nextindent, max_entries)

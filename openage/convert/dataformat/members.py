@@ -167,37 +167,35 @@ class DynLengthMember(DataMember):
         self.length = length
 
     def get_length(self, obj=None):
-        if self.is_dynamic_length():
-            if self.length is self.any_length:
-                return self.any_length
-
-            if not obj:
-                raise Exception("dynamic length query requires source object")
-
-            if callable(self.length):
-                # length is a lambda that determines the length by some fancy manner
-                # pass the target object as lambda parameter.
-                length_def = self.length(obj)
-
-                # if the lambda returns a non-dynamic length (aka a number)
-                # return it directly. otherwise, the returned variable name
-                # has to be looked up again.
-                if not self.is_dynamic_length(target=length_def):
-                    return length_def
-
-            else:
-                # self.length specifies the attribute name where the length is stored
-                length_def = self.length
-
-            # look up the given member name and return the value.
-            if not isinstance(length_def, str):
-                raise Exception("length lookup definition is not str: %s<%s>" % (length_def, type(length_def)))
-
-            return getattr(obj, length_def)
-
-        else:
+        if not self.is_dynamic_length():
             # non-dynamic length (aka plain number) gets returned directly
             return self.length
+        if self.length is self.any_length:
+            return self.any_length
+
+        if not obj:
+            raise Exception("dynamic length query requires source object")
+
+        if callable(self.length):
+            # length is a lambda that determines the length by some fancy manner
+            # pass the target object as lambda parameter.
+            length_def = self.length(obj)
+
+            # if the lambda returns a non-dynamic length (aka a number)
+            # return it directly. otherwise, the returned variable name
+            # has to be looked up again.
+            if not self.is_dynamic_length(target=length_def):
+                return length_def
+
+        else:
+            # self.length specifies the attribute name where the length is stored
+            length_def = self.length
+
+        # look up the given member name and return the value.
+        if not isinstance(length_def, str):
+            raise Exception("length lookup definition is not str: %s<%s>" % (length_def, type(length_def)))
+
+        return getattr(obj, length_def)
 
     def is_dynamic_length(self, target=None):
         if target is None:
@@ -323,10 +321,7 @@ class ZeroMember(NumberMember):
 
     def verify_read_data(self, obj, data):
         # fail if a single value of data != 0
-        if any(False if v == 0 else True for v in data):
-            return False
-        else:
-            return True
+        return not any(False if v == 0 else True for v in data)
 
 
 class ContinueReadMemberResult(Enum):
@@ -389,8 +384,7 @@ class EnumMember(RefMember):
 
     def get_parsers(self, idx, member):
         enum_parse_else = ""
-        enum_parser = list()
-        enum_parser.append("// parse enum %s" % (self.type_name))
+        enum_parser = ["// parse enum %s" % self.type_name]
         for enum_value in self.values:
             enum_parser.extend([
                 '%sif (buf[%d] == "%s") {' % (enum_parse_else, idx, enum_value),
@@ -544,9 +538,8 @@ class CharArrayMember(DynLengthMember):
     def get_headers(self, output_target):
         ret = set()
 
-        if "struct" == output_target:
-            if self.is_dynamic_length():
-                ret |= determine_header("std::string")
+        if "struct" == output_target and self.is_dynamic_length():
+            ret |= determine_header("std::string")
 
         return ret
 

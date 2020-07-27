@@ -52,8 +52,8 @@ class StructDefinition:
 
         # create ordered dict of member type objects from structure definition
         self.members = OrderedDict()
-        self.inherited_members = list()
-        self.parent_classes = list()
+        self.inherited_members = []
+        self.parent_classes = []
 
         target_members = target.get_data_format(
             allowed_modes=(True, READ_EXPORT, NOREAD_EXPORT),

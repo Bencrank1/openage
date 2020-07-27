@@ -84,7 +84,7 @@ class GeneratedFile:
             raise Exception("only ContentSnippets can be added to generated files, "
                             "tried %s" % type(snippet))
 
-        if not snippet.file_name == self.file_name and not snippet.file_name:
+        if snippet.file_name != self.file_name and not snippet.file_name:
             raise Exception("only snippets with the same target file_name "
                             "can be put into the same generated file.")
 
@@ -171,7 +171,7 @@ class GeneratedFile:
 
         # put snippets into list in correct order
         # snippets will be written according to this [(snippet, prio), ...] list
-        snippets_priorized = list()
+        snippets_priorized = []
 
         # determine each snippet's priority by number of type references and definitions
         # smaller prio means written earlier in the file.
@@ -183,7 +183,7 @@ class GeneratedFile:
             # let each snippet find others as dependencies
             missing_types |= s.add_required_snippets(self.snippets)
 
-        if len(missing_types) > 0:
+        if missing_types:
             import pprint
             raise Exception("missing types for %s:\n%s" % (repr(self), pprint.pformat(missing_types)))
 
@@ -192,7 +192,7 @@ class GeneratedFile:
 
         # create list of snippets to be put in the generated file.
         # [(snippet, prio)]
-        snippets_body_sorted = list()
+        snippets_body_sorted = []
         snippets_body_set = set()
 
         # fetch list of all required snippets for all snippets to put in the file

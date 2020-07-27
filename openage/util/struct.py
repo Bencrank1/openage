@@ -39,9 +39,10 @@ class NamedStructMeta(type):
             valuehasspecstr = hasattr(value, "specstr")
 
             # ignore member methods
-            if not valuehasspecstr:
-                if callable(value) or isinstance(value, classmethod):
-                    continue
+            if not valuehasspecstr and (
+                callable(value) or isinstance(value, classmethod)
+            ):
+                continue
 
             if membername == 'endianness':
                 if specstr is not None:
@@ -59,9 +60,7 @@ class NamedStructMeta(type):
 
             if valuehasspecstr:
                 postprocessors[membername], value = value, value.specstr
-            elif isinstance(value, str):
-                pass
-            else:
+            elif not isinstance(value, str):
                 raise TypeError(
                     "NamedStruct member %s: expected str, but got %s"
                     % (membername, repr(value)))

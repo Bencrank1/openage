@@ -217,11 +217,12 @@ class BinaryTreePacker(Packer):
         should_grow_down = ((self.root.width / self.aspect_ratio) >=
                             (self.root.height + height))
 
-        if can_grow_right and should_grow_right:
-            return self.grow_right(width, height)
-        elif can_grow_down and should_grow_down:
-            return self.grow_down(width, height)
-        elif can_grow_right:
+        if (
+            can_grow_right
+            and should_grow_right
+            or (not can_grow_down or not should_grow_down)
+            and can_grow_right
+        ):
             return self.grow_right(width, height)
         else:
             return self.grow_down(width, height)

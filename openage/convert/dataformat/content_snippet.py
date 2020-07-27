@@ -68,9 +68,7 @@ class ContentSnippet:
         for s in self.required_snippets:
             resolved_types |= (self.typerefs & s.typedefs)
 
-        missing_types  = self.typerefs - resolved_types
-
-        return missing_types
+        return self.typerefs - resolved_types
 
     def get_required_snippets(self):
         """
@@ -79,7 +77,7 @@ class ContentSnippet:
         """
 
         # TODO: loop detection
-        ret = list()
+        ret = []
 
         # sort snippets deterministically by __lt__ function
         for s in sorted(self.required_snippets):
@@ -107,13 +105,12 @@ class ContentSnippet:
         """
 
         if isinstance(other, type(self)) or isinstance(self, type(other)):
-            if not (other.orderby and self.orderby):
+            if (other.orderby and self.orderby):
+                return self.orderby < other.orderby
+            else:
                 faild = self if other.orderby else other
                 raise Exception("%s doesn't have orderby member set" % (
                     repr(faild)))
-            else:
-                ret = self.orderby < other.orderby
-                return ret
         else:
             raise TypeError("unorderable types: %s < %s" % (
                 type(self), type(other)

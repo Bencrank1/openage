@@ -33,10 +33,7 @@ class Wrapper(FSLikeObject):
             raise TypeError("Path expected as obj, got '%s'" % type(obj))
 
         self.obj = obj
-        if contextguard is None:
-            self.contextguard = DummyGuard()
-        else:
-            self.contextguard = contextguard
+        self.contextguard = DummyGuard() if contextguard is None else contextguard
 
     def __repr__(self):
         if isinstance(self.contextguard, DummyGuard):

@@ -24,11 +24,7 @@ def assert_value(value, expected=None, validator=None):
     if expected is not None and validator is not None:
         raise ValueError("can't have both 'expected' and 'validator'")
 
-    if validator is None:
-        success = value == expected
-    else:
-        success = validator(value)
-
+    success = value == expected if validator is None else validator(value)
     if success:
         return
 

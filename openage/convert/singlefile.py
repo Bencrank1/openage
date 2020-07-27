@@ -58,7 +58,7 @@ def main(args, error):
         read_slp_file(args.filename, args.palette_file, args.output,
                       player_palette=args.player_palette_file)
 
-    elif args.mode == "drs-slp" or (file_extension == "slp" and args.drs):
+    elif args.mode == "drs-slp" or file_extension == "slp":
         if not (args.drs and args.palette_index):
             raise Exception("palette-file needs to be specified")
 

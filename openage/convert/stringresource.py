@@ -31,7 +31,7 @@ class StringResource(exportable.Exportable):
             self.strings[lang].update(langstrings)
 
     def dump(self, filename):
-        data = list()
+        data = []
 
         for lang, langstrings in self.strings.items():
             for idx, text in langstrings.items():

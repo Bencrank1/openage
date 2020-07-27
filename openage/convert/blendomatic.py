@@ -36,10 +36,10 @@ class BlendingTile:
 
         import numpy
 
-        tile_rows = list()
+        tile_rows = []
 
         for picture_row in self.row_data:
-            tile_row_data = list()
+            tile_row_data = []
 
             for alpha_data in picture_row:
 
@@ -47,14 +47,13 @@ class BlendingTile:
                     # draw full transparency
                     alpha = 0
                     val = 0
+                elif alpha_data == 128:
+                    alpha = 255
+                    val = 0
                 else:
-                    if alpha_data == 128:
-                        alpha = 255
-                        val = 0
-                    else:
-                        # original data contains 7-bit values only
-                        alpha = 128
-                        val = (127 - (alpha_data & 0x7f)) * 2
+                    # original data contains 7-bit values only
+                    alpha = 128
+                    val = (127 - (alpha_data & 0x7f)) * 2
 
                 tile_row_data.append((val, val, val, alpha))
 
@@ -152,7 +151,7 @@ class BlendingMode:
 
         read_so_far = 0
         max_width = 0
-        tilerows = list()
+        tilerows = []
 
         for y_pos in range(self.row_count):
             if y_pos < half_row_count:
@@ -227,7 +226,7 @@ class Blendomatic(Exportable):
 
         blending_mode = Struct("< I %dB" % (tile_count))
 
-        self.blending_modes = list()
+        self.blending_modes = []
 
         for i in range(blending_mode_count):
             header_data = fileobj.read(blending_mode.size)
